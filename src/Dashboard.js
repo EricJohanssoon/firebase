@@ -16,6 +16,10 @@ function Dashboard({movielist}) {
   const [searchTerm, setSearchTerm] = useState("");
   console.log("going back to dashboard");
 
+
+  useEffect(() => {
+    setFilteredMovies(movielist);
+  }, [movielist]);
   
   useEffect(() => {
     if(searchTerm !== ""){
@@ -57,12 +61,14 @@ function Dashboard({movielist}) {
         const wishlist = row.wishlist;
         await setDoc(ref, new User(user.uid, user.displayName, user.email, wishlist));
 
-      const favMovies = [];
+      const favMovies = movielist;
 
       wishlist.forEach((index) => {
-        const movie = movielist[index];
-        favMovies.push(movie);
+        favMovies.splice(index,1)
       });
+      setFilteredMovies(favMovies);
+      
+    
       // console.log("Favourite movies ", favMovies);
       // console.log("Displayed movies", filteredMovies);
     }
@@ -80,15 +86,21 @@ function Dashboard({movielist}) {
       <h1>Dashboard</h1>
        <div className="dashboard__container">
         <div className="credentials_container_name"> Name: {user?.displayName}</div>
-         <div className="credentials_container_name">Email: {user?.email}</div>
-         <button className="button-5" onClick={() => {logOut(); navigate("/");}}>
-          Logout
-         </button>
-         <button className="button-5" onClick={() => {navigate("/wishlist")}}>
+         <div className="buttons">
+         <button className="button-6" onClick={() => {navigate("/wishlist")}}>
           Wishlist
          </button>
+         <button className="button-6" onClick={() => {logOut(); navigate("/");}}>
+          Logout
+         </button>
+
+
+         </div>
+   
+         
        </div>
        </div>
+       <div className="searchField">
        <input 
             type="text"
             id="header-search"
@@ -98,6 +110,7 @@ function Dashboard({movielist}) {
               setSearchTerm(event.target.value);
             }}
         />
+        </div>
       <div>
           {(filteredMovies && <Tables movies={filteredMovies} filterMovies={filterMovies}/>) || "Loading movies..."}
         </div>

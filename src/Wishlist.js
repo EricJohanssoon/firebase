@@ -65,16 +65,17 @@ function Wishlist({movielist}) {
         <h1>Wishlist</h1>
        <div className="wishlist_container">
          <div className="credentials_container_name">Name: {user?.displayName}</div>
-         <div className="credentials_container_email">Email: {user?.email}</div>
-      
-         <button className="button-5" onClick={logOut}>
-          Logout
-         </button>
-         <button className="button-5" onClick={() => {navigate("/dashboard")}}>
+         <div className="buttons">
+         <button className="button-6" onClick={() => {navigate("/dashboard")}}>
           Dashboard
          </button>
+         <button className="button-6" onClick={logOut}>
+          Logout
+         </button>
+         </div>
         </div>
        </div>
+       <div className="searchField">
        <input 
             type="text"
             id="header-search"
@@ -84,6 +85,7 @@ function Wishlist({movielist}) {
               setSearchTerm(event.target.value);
             }}
         />
+        </div>
        <div className="movieTables">
           {(filteredMovies && <Tables2 movies={filteredMovies} filterMovies={filterMovies}/>) || "Loading movies.."}
         </div>
